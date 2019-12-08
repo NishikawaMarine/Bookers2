@@ -1,0 +1,86 @@
+<% if @book_new.errors.any? %>
+  <div class="alert alert-warning">
+    <ul>
+      <% @book_new.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+<div class= "container">
+ <div class= "row">
+  <div class= "col-md-3 ">
+
+<h2>User info</h2>
+<%= attachment_image_tag @book.user, :profile_image, :fill, 70, 70, format: 'jpeg',fallback: "no_image.jpg", size:'70x70' %>
+
+		<table class="table">
+			<tbody>
+
+				<tr>
+					<td>name</td>
+					<td><%= @book.user.name %></td>
+				</tr>
+				<tr>
+					<td>introduction</td>
+					<td><%= @book.user.introduction %></td>
+				</tr>
+			</tbody>
+		 </table>
+
+<%= link_to edit_user_path(@book.user) do %>
+<span class="col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_9733" aria-hidden="true"></span> 
+<% end %>
+
+<h2>New book</h2>
+<%= form_for(@book_new) do |f| %>
+
+<h4>Title</h4>
+<%= f.text_field :title, class: "col-xs-12" %>
+
+<h4>Opinion</h4>
+<%= f.text_area :body, class: "col-xs-12" %>
+
+<%= f.submit 'Create Book', class: "btn btn-default col-xs-12" %>
+
+<% end %>
+</div>
+
+<div class="col-md-9">
+	<h2>Book dateil</h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+				<tr>
+					<td class="col-md-3"><%= attachment_image_tag @book.user, :profile_image, :fill, 50, 50, format: 'jpeg',fallback: "no_image.jpg", size:'50x50' %><br><%= link_to @book.user.name, user_path(@book.user) %></td>
+					
+					<td class="col-md-2"><%= @book.title %></td>
+					<td class="col-md-2"><%= @book.body %></td>
+
+				<%if @book.user == current_user  %>
+
+					<td class="col-md-3"><%= link_to "Edit", edit_book_path(@book), class: "btn btn-default" %></td>
+					<td class="col-md-2"><%= link_to "Destroy", book_path(@book), class: "btn btn-default", method: :delete,"data-confirm" => "本当に消しますか？" %></td>
+				<% end %>
+				</tr>
+				<tr>
+		</tbody>
+	</table>
+
+
+</div>
+</div>
+</div>
+<div class="col-md-4 col-md-offset-8">
+<p>CopyRight Infratop.inc</p>
+</div>
+
