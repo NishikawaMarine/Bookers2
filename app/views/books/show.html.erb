@@ -61,18 +61,53 @@
 		</thead>
 		<tbody>
 				<tr>
-					<td class="col-md-3"><%= attachment_image_tag @book.user, :profile_image, :fill, 50, 50, format: 'jpeg',fallback: "no_image.jpg", size:'50x50' %><br><%= link_to @book.user.name, user_path(@book.user) %></td>
+					<td class="col-md-2"><%= attachment_image_tag @book.user, :profile_image, :fill, 50, 50, format: 'jpeg',fallback: "no_image.jpg", size:'50x50' %><br><%= link_to @book.user.name, user_path(@book.user) %></td>
 					
 					<td class="col-md-2"><%= @book.title %></td>
 					<td class="col-md-2"><%= @book.body %></td>
-
+					<td class="col-md-2"><% if current_user.already_favorite?(@book) %>
+						  <%= button_to 'いいねを取り消す', book_favorite_path(@book), method: :delete %>
+						<% else %>
+						  <%= button_to 'いいね', book_favorites_path(@book) %>
+						<% end %>
+						件数: <%= @book.favorites.count %>
+					</td>
 				<%if @book.user == current_user  %>
 
-					<td class="col-md-3"><%= link_to "Edit", edit_book_path(@book), class: "btn btn-default" %></td>
+					<td class="col-md-2"><%= link_to "Edit", edit_book_path(@book), class: "btn btn-default" %></td>
 					<td class="col-md-2"><%= link_to "Destroy", book_path(@book), class: "btn btn-default", method: :delete,"data-confirm" => "本当に消しますか？" %></td>
 				<% end %>
 				</tr>
+		</tbody>
+	</table>
+	<table class="table">
+		<tbody>
 				<tr>
+					<td><%= form_for [@book,@book_comment] do |f| %>
+							<%= f.text_field :book_comment,class: "col-md-12 comment" %>
+							<br>
+							<%= f.submit 'コメントする',class: "pull-right" %>
+						<% end %>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						コメント一覧<br>
+						件数: <%= @book.book_comments.count %>
+					</td>
+				</tr>
+				<tr>
+					<td><% @book_comments.each do |c| %>
+							<div>
+								<%= c.book_comment %>
+							<%if c.user_id == current_user.id  %>
+								<%= button_to '削除', book_book_comment_path(@book.id, c.id), method: :delete %>
+							<% end %>
+								<hr>
+							</div>
+						<% end %>
+					</td>
+				</tr>
 		</tbody>
 	</table>
 
