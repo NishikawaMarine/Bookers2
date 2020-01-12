@@ -1,0 +1,45 @@
+<div class= "container">
+	<div class= "row">
+		<div class="col-md-12">
+			<h2>Following Users</h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th></th>
+						<th> image</th>
+						<th>Name</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @user.followings.each do |user| %>
+					<%# if user.id != current_user.id %>
+						<tr>
+							<td></td>
+							<td class="col-md-2"><%= attachment_image_tag user, :profile_image, :fill, 50, 50, format: 'jpeg',fallback: "no_image.jpg", size:'50x50' %></td>
+							<td class="col-md-2"><%= user.name %></td>
+							<td class="col-md-2">
+								<% unless current_user?(user) %>
+									<div id = "follow_form">
+										<% if current_user.following?(user) %>
+											<%= render 'unfollow', user: user %>
+										<% else %>
+											<%=render 'follow', user: user %>
+										<% end %>
+									</div>
+								<% end %></td>
+				　　　		<td  class="col-md-3"><%= render 'stats', user: user %>
+							</td>
+							<td class="col-md-2"><%= link_to  'Show' , user_path(user) %></td>
+						</tr>
+						<%#else %>
+					<%#end %>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="col-md-4 col-md-offset-8">
+	<p>CopyRight Infratop.inc</p>
+</div>
